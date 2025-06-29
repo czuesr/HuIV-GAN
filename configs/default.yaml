@@ -1,0 +1,45 @@
+vae:
+  num_epochs: 200                # VAE 训练轮数
+  kl_weight: 0.01               # KL散度损失项的权重
+  recon_loss: "mse"             # 重构损失类型，可选 "mse" 或 "bce"
+  learning_rate: 0.0002         # VAE 优化器学习率
+  beta1: 0.5                    # Adam 优化器 beta1 参数
+  beta2: 0.999                  # Adam 优化器 beta2 参数
+  weight_decay: 0.0             # 权重衰减（一般为0）
+  save_interval: 20            # 每多少轮保存一次模型与样本图像
+  log_interval: 10             # 每多少 batch 输出一次日志（如 loss）
+  latent_dim: 512              # 潜在空间维度 z 的大小
+  image_size: 128              # 输入图像尺寸（图像将被 resize 成这个大小）
+  image_channels: 3            # 图像通道数（RGB图为3）
+  eval_interval: 10            # 每多少轮进行一次图像质量评估（SSIM、PSNR、FID）
+
+gan:
+  num_epochs: 1300               # GAN 对抗训练轮数
+  learning_rate_generator: 0.0001     # 生成器的学习率
+  learning_rate_discriminator: 0.0002 # 判别器的学习率
+  noise_std: 0.1               # 给输入图像添加的高斯噪声标准差（用于提升鲁棒性）
+  d_loss_weight: 1.0           # 判别器损失项权重（暂未用，可拓展）
+  g_loss_weight: 1.0           # 生成器损失项权重（暂未用，可拓展）
+  grad_penalty_weight: 0.1     # 判别器梯度惩罚项权重
+  save_interval: 20            # 每多少轮保存一次生成图像与模型参数
+  log_interval: 10             # 每多少 batch 输出一次日志（如 G/D loss）
+  eval_interval: 10            # 每多少轮评估生成图像质量（SSIM、PSNR、FID）
+
+hiv_gan:
+  feedback_ratio: 0.2           # 人工反馈样本占比（每 batch 中的比例）
+  feedback_threshold: 0.75      # 人工样本筛选阈值（如 SSIM ≥ 0.75）
+  feedback_image_dir: "generated_image"   # 人工选择图像保存目录（配合 PyQt 界面使用）
+  auto_pause_interval: 10       # 每隔多少轮自动暂停一次供用户筛图（仅在 UI 模式中触发）
+
+path:
+  dataset: "data/bga"                   # 数据集路径（原始图像目录）
+  output_dir: "results/outputs"         # 所有输出图像和结果的根目录
+  checkpoints: "results/checkpoints"   # 可选模型保存路径（暂未使用）
+  logs: "results/logs"                 # 训练日志输出路径（Excel 文件保存在这里）
+
+device:
+  use_cuda: true               # 是否启用 GPU 训练
+  gpu_id: 0                    # 指定使用哪张 GPU（如 0 表示 CUDA:0）
+
+seed: 42                       # 随机种子，用于保证实验可重复性
+batch_size: 64                 # 每个训练 batch 的图像数量
